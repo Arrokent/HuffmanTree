@@ -15,11 +15,12 @@
         // 压缩和减压。为此，需要添加三个步骤：
         // （1）通读输入 文本文件生成文件中所有字母的实际频率；
         // （2）存储哈夫曼树在编码输出文件的开头被解码函数使用；
-        // （3） 从输出文件读取以生成原始文本文件。
-        // 注：（1）编码输出文件应为二进制文件，而不是文本文件。
-        //    （2） 用户可以指定任何输入或 要压缩或解压缩的输出文件。
+        // （3）从输出文件读取以生成原始文本文件。
+
 
         var str = "张三张三李四李四王五";
+        var freq;
+        var finalName;
 
         var inputText = $("#inputText");
         var outputFreq = $('#outputFreq');
@@ -36,7 +37,7 @@
                 console.log("Text: " + str);
                 console.log("URICode: " + encodeURI(str));
 
-                var freq = getFreq(str);
+                freq = getFreq(str);
                 console.log(freq);
 
                 var outputFreq = '';
@@ -48,6 +49,20 @@
                 })
 
                 document.getElementById('outputFreq').value = outputFreq;
+
+                finalName = buildHT(freq);
+            })
+
+            $('#uploadCode').click(function () {
+
+                // there can use jquery val function, need check
+                str = document.getElementById('inputCode').value;
+
+                console.log("Code: " + str);
+
+                var res = getDecode(str, freq[finalName])
+
+                document.getElementById('outputText').value = res;
             })
 
 
@@ -106,6 +121,16 @@
         <input type="text" class="form-control" id="outputTextCode" placeholder="请先输入文本或上传文件">
     </div>
 
+    <div class="form-group col-xs-12">
+        <label><h3>解码</h3></label>
+        <input type="text" class="form-control" id="inputCode" placeholder="请先输入文本或上传文件">
+        <button class="btn btn-default" id="uploadCode" style="margin-top: 10px">解码</button>
+    </div>
+
+    <div class="form-group col-xs-12">
+        <label><h3>编码文本</h3></label>
+        <input type="text" class="form-control" id="outputText" placeholder="请先输入文本或上传文件">
+    </div>
 
 </div>
 

@@ -9,20 +9,14 @@
 
     <script>
 
-        var str = "张三张三李四李四王五";
-        console.log(str);
-        console.log(encodeURI(str));
-
+        var str = "张三张三";
         var freq = getFreq(str);
-        console.log(freq);
+        var finalName = buildHT(freq);
+        console.log(freq[finalName]);
+        console.log(freq[finalName].min1Index.index);
+        console.log(getDecode('01010101', freq[finalName]));
 
-        $.each(freq, function (index, value) {
-          console.log(decodeURI(index),value);
-        })
-
-        // buildHT(freq);
-        // console.log(freq);
-
+        //getHuffmanCode(freq.min1Index);
 
     </script>
 

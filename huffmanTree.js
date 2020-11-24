@@ -96,6 +96,9 @@ function findMinIndex(freq) {
  */
 function buildHT(freq) {
 
+    // to store the final name of the tree
+    var finalName ='';
+
     // while there are more than one node in the freq
     while (Object.getOwnPropertyNames(freq).length >= 2) {
 
@@ -154,17 +157,89 @@ function buildHT(freq) {
         // insert the new one, a binary tree
         freq[min1Index + "+" + min2Index] = obj;
 
+        finalName = min1Index + "+" + min2Index;
     }
+
+    return finalName;
 }
 
 
 /*
- * 生成字符的huffman树编码
+ * 传入一个字符串，转化为huffman树编码
  */
-function getCode(freq) {
-    // check if the freq has already been built
-    if (Object.getOwnPropertyNames(freq).length > 1)
-        alert("Please build Huffman tree first");
+function getHuffmanCode(str, freq) {
+    // first change str into encodeURI form
+    var encodeStr = encodeURI(str);
+    var res = '';
+
+    for (var i = 0; i < encodeStr.length; i++) {
+
+        // if the character begin with %, means that it's a Chinese character
+        if (encodeStr[i] === '%') {
+
+            // read nine characters because 9char is a Chinese character
+            var char = ''
+            for (var j = i; j < i + 9; j++)
+                char += encodeStr[j];
+
+            res += getHuffmanCodeHelp(char, freq);
+
+            // if read 9 characters, then jump to the next one
+            i += 8;
+        }
+
+        // else the character is an english or ASCII code, encodeURI won't affect
+        else {
+
+            var char = encodeStr[i]
+            // same as Chinese character, have had -> ++, not -> new
+            res += getHuffmanCodeHelp(char, freq);
+        }
+
+    }
+
+    //console.log(strFreq);
+    return res;
+}
 
 
+/*
+ * 读取一个字符的huffman树编码
+ */
+function getHuffmanCodeHelp(str, freq) {
+
+}
+
+/*
+ * 传入一个01编码，得到解码文件
+ */
+function getDecode(str, freq) {
+    // the result
+    var res = '0';
+
+    // the iterator
+    var curr = freq;
+
+
+    for (var i = 0; i < str.length; i++) {
+
+        // 0 turn left, 1 turn right
+        if (str[i] === '0') {
+            curr = freq.min1Index.index;
+        } else if (str[i] === '1') {
+            curr = freq.min2Index.index;
+        }
+
+        // console.log(curr);
+
+        // if find index is the value, append it to res
+        if (typeof curr !== "object") {
+            res += curr;
+
+            // refresh curr to the root node
+            curr = freq;
+        }
+    }
+
+    return res;
 }
