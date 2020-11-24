@@ -5,9 +5,10 @@
     <title>Title</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="bootstrap.min.css">
     <script src="jquery-3.5.1.min.js"></script>
+    <script src="huffmanTree.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
 
     <script>
 
@@ -18,13 +19,49 @@
         // 注：（1）编码输出文件应为二进制文件，而不是文本文件。
         //    （2） 用户可以指定任何输入或 要压缩或解压缩的输出文件。
 
+        var str = "张三张三李四李四王五";
+
+        var inputText = $("#inputText");
+        var outputFreq = $('#outputFreq');
+        var outputHTCode = $('#outputHTCode');
+        var outputTextCode = $('#outputTextCode');
+
+        $(function (ev) {
+
+            $('#uploadText').click(function () {
+
+                // there can use jquery val function, need check
+                str = document.getElementById('inputText').value;
+
+                console.log("Text: " + str);
+                console.log("URICode: " + encodeURI(str));
+
+                var freq = getFreq(str);
+                console.log(freq);
+
+                var outputFreq = '';
+                $.each(freq, function (index, value) {
+                    outputFreq += decodeURI(index);
+                    outputFreq += ': ';
+                    outputFreq += value;
+                    outputFreq += '\t';
+                })
+
+                document.getElementById('outputFreq').value = outputFreq;
+            })
+
+
+        })
+
+
     </script>
+
+
 </head>
 <body>
 
-<div class="container">
-
-    <div class="jumbotron">
+<div class="jumbotron">
+    <div class="container">
         <h1>HuffmanTree</h1>
         <h2>工具使用：</h2><br>
         <h3>编码：</h3><br>
@@ -34,28 +71,41 @@
         <h3>解码：</h3><br>
         <p>&nbsp;&nbsp;4. 选择输入文本或者上传二进制文件(需要先生成Huffman树)</p><br>
         <p>&nbsp;&nbsp;5. 输出该二进制文件的解码</p><br>
+    </div>
+</div>
 
+<div class="container" style="margin: 0 200px">
+
+    <div class="form-group col-xs-6" style="width: 500px">
+        <label><h3>输入文本</h3></label>
+        <input type="text" class="form-control" id="inputText" placeholder="输入文本">
+        <button class="btn btn-default" id="uploadText" style="margin-top: 10px">上传文本</button>
     </div>
 
-    <form action="" method="get" style="width: 800px">
 
-        <div class="form-group">
-            <label>输入文本</label>
-            <input type="text" class="form-control" name="userInputText" placeholder="输入文本">
-        </div>
+    <div class="form-group col-xs-6" style="width: 400px; margin-bottom: 100px">
+        <label><h3>选择文件</h3></label>
+        <input type="file" name="userUploadFile">
+    </div>
 
-        <button type="submit" class="btn btn-default">上传文本</button>
 
-    </form>
+    <div class="form-group col-xs-12">
+        <label><h3>各字符频率</h3></label>
+        <input type="text" class="form-control" id="outputFreq" placeholder="请先输入文本或上传文件">
+    </div>
 
-    <form action="" method="get">
 
-        <div class="form-group" style="margin-top: 20px">
-            <label>选择文件</label>
-            <input type="file" name="userUploadFile">
-        </div>
+    <div class="form-group col-xs-12">
+        <label><h3>Huffman树编码</h3></label>
+        <input type="text" class="form-control" id="outputHTCode" placeholder="请先输入文本或上传文件">
+    </div>
 
-    </form>
+
+    <div class="form-group col-xs-12">
+        <label><h3>文本编码</h3></label>
+        <input type="text" class="form-control" id="outputTextCode" placeholder="请先输入文本或上传文件">
+    </div>
+
 
 </div>
 

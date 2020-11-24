@@ -1,27 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="jquery-3.5.1.min.js"></script>
-    <script src="ht.js"></script>
+    <script src="huffmanTree.js"></script>
 
     <script>
 
-        var str = "三三三三田璞尧";
+        var str = "张三张三李四李四王五";
         console.log(str);
         console.log(encodeURI(str));
 
         var freq = getFreq(str);
-
-        buildHT(freq);
-
         console.log(freq);
 
-        // $.each(freq, function (index, value) {
-        //     if (typeof value == 'object')
-        //         console.log(index, value.count);
-        // })
+        $.each(freq, function (index, value) {
+          console.log(decodeURI(index),value);
+        })
+
+        // buildHT(freq);
+        // console.log(freq);
+
 
     </script>
 

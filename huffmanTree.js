@@ -1,5 +1,11 @@
+/**
+ * @author: chibiken
+ * @create: 2020/11/24
+ */
+
 /*
- * 读取str各字符的频率，返回一个对象，key：字符，value：出现的次数
+ * 读取str各字符的频率，返回一个对象freq
+ * for buildHT
  */
 function getFreq(str) {
     // first change str into encodeURI form
@@ -46,6 +52,45 @@ function getFreq(str) {
     return strFreq;
 }
 
+
+/*
+ * 查找当前freq中，count最小的那一个字符
+ * for buildHT
+ */
+function findMinIndex(freq) {
+    var minCount = 100000;
+    var minIndex = -1;
+    var type = 'number';
+
+    // use jQuery each function to iterate each key&value
+    $.each(freq, function (index, value) {
+
+        // if the node is only a value&key
+        if (typeof value == 'number') {
+            // store the min count and index
+            if (value < minCount) {
+                type = 'number';
+                minCount = value;
+                minIndex = index;
+            }
+        }
+
+        // else if the node is a tree
+        else {
+            if (value.count < minCount) {
+                type = 'object'
+                minCount = value;
+                minIndex = index;
+            }
+        }
+    })
+
+    // return an index or an object
+
+    return minIndex;
+}
+
+
 /*
  * 构建huffman编码树
  */
@@ -64,27 +109,42 @@ function buildHT(freq) {
         var min1Count = freq[min1Index];
 
         // if the min1Index is a tree, then the freq[minIndex] is an object
-        if (typeof min1Count == 'object')
+        if (typeof min1Count == 'object') {
             min1Count = min1Count.count
+            var temp1 = freq[min1Index]
+        }
 
         delete freq[min1Index];
+
 
         // find the second min character, same as min1
         var min2Index = findMinIndex(freq);
         if (!min2Index)
             alert('findMinIndex error! return -1');
         var min2Count = freq[min2Index];
-        if (typeof min2Count == 'object')
+        if (typeof min2Count == 'object') {
             min2Count = min2Count.count
+            var temp2 = freq[min2Index]
+        }
         delete freq[min2Index];
 
         var min1 = new Object();
         min1.count = min1Count;
-        min1.index = min1Index;
+
+        // if temp1 exist, means that this min1Index is an object
+        if (!temp1) {
+            min1.index = min1Index;
+        } else {
+            min1.index = temp1;
+        }
 
         var min2 = new Object();
         min2.count = min2Count;
-        min2.index = min2Index;
+        if (!temp2) {
+            min2.index = min2Index;
+        } else {
+            min2.index = temp2;
+        }
 
         var obj = new Object();
         obj.min1Index = min1;
@@ -97,33 +157,14 @@ function buildHT(freq) {
     }
 }
 
+
 /*
- * 查找当前freq中，count最小的那一个字符
+ * 生成字符的huffman树编码
  */
-function findMinIndex(freq) {
-    var minCount = 100000;
-    var minIndex = -1;
+function getCode(freq) {
+    // check if the freq has already been built
+    if (Object.getOwnPropertyNames(freq).length > 1)
+        alert("Please build Huffman tree first");
 
-    // use jQuery each function to iterate each key&value
-    $.each(freq, function (index, value) {
 
-        // if the node is only a value&key
-        if (typeof value == 'number') {
-            // store the min count and index
-            if (value < minCount) {
-                minCount = value;
-                minIndex = index;
-            }
-        }
-
-        // else if the node is a tree
-        else {
-            if (value.count < minCount) {
-                minCount = value;
-                minIndex = index;
-            }
-        }
-    })
-
-    return minIndex;
 }

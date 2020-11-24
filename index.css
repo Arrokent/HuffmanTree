@@ -1,3 +1,13 @@
 .container {
     margin: 40px 0 0;
 }
+
+.jumbotron {
+    background-color: #dddddd;
+    margin: 50px 200px;
+}
+
+.jumbotron p {
+    margin: 0;
+    padding: 0;
+}
