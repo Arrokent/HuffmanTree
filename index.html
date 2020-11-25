@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Buffman树的编码与解码</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="jquery-3.5.1.min.js"></script>
@@ -77,6 +77,11 @@
             // upload 01 code
             $('#uploadCode').click(function () {
 
+                if (typeof freq !== "object") {
+                    alert('请先输入文本或传入文件');
+                    return;
+                }
+
                 // there can use jquery val function, need check
                 str = document.getElementById('inputCode').value;
 
@@ -126,22 +131,21 @@
     </div>
 
 
+    <div class="form-group col-xs-12" style="width: 80%;">
+        <label><h3>各字符频率</h3></label>
+        <input type="text" class="form-control" id="outputFreq" placeholder="请先输入文本或上传文件">
+    </div>
 
-        <div class="form-group col-xs-12" style="width: 80%;">
-            <label><h3>各字符频率</h3></label>
-            <input type="text" class="form-control" id="outputFreq" placeholder="请先输入文本或上传文件">
-        </div>
+    <div class="form-group col-xs-12" style="width: 80%;">
+        <label><h3>解码</h3></label>
+        <input type="text" class="form-control" id="inputCode" placeholder="请先输入文本或上传文件">
+        <button class="btn btn-default" id="uploadCode" style="margin-top: 10px">解码</button>
+    </div>
 
-        <div class="form-group col-xs-12" style="width: 80%;">
-            <label><h3>解码</h3></label>
-            <input type="text" class="form-control" id="inputCode" placeholder="请先输入文本或上传文件">
-            <button class="btn btn-default" id="uploadCode" style="margin-top: 10px">解码</button>
-        </div>
-
-        <div class="form-group col-xs-12" style="width: 80%;">
-            <label><h3>编码文本</h3></label>
-            <input type="text" class="form-control" id="outputText" placeholder="请先输入文本或上传文件">
-        </div>
+    <div class="form-group col-xs-12" style="width: 80%;">
+        <label><h3>编码文本</h3></label>
+        <input type="text" class="form-control" id="outputText" placeholder="请先输入文本或上传文件">
+    </div>
 
 
 </div>

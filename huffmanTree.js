@@ -48,7 +48,7 @@ function getFreq(str) {
 
     }
 
-    //console.log(strFreq);
+    console.log(strFreq);
     return strFreq;
 }
 
@@ -165,54 +165,6 @@ function buildHT(freq) {
 
 
 /*
- * 传入一个字符串，转化为huffman树编码
- */
-function getHuffmanCode(str, freq) {
-    // first change str into encodeURI form
-    var encodeStr = encodeURI(str);
-    var res = '';
-
-    for (var i = 0; i < encodeStr.length; i++) {
-
-        // if the character begin with %, means that it's a Chinese character
-        if (encodeStr[i] === '%') {
-
-            // read nine characters because 9char is a Chinese character
-            var char = ''
-            for (var j = i; j < i + 9; j++)
-                char += encodeStr[j];
-
-            res += getHuffmanCodeHelp(char, freq);
-
-            // if read 9 characters, then jump to the next one
-            i += 8;
-        }
-
-        // else the character is an english or ASCII code, encodeURI won't affect
-        else {
-
-            var char = encodeStr[i]
-            // same as Chinese character, have had -> ++, not -> new
-            res += getHuffmanCodeHelp(char, freq);
-        }
-
-    }
-
-    //console.log(strFreq);
-    return res;
-}
-
-
-/*
- * 读取一个字符的huffman树编码
- */
-function getHuffmanCodeHelp(str, freq) {
-    var res = '';
-
-}
-
-
-/*
  * 传入一个01编码，得到解码文件
  */
 function getDecode(str, freq) {
@@ -222,6 +174,14 @@ function getDecode(str, freq) {
     // the iterator
     var curr = freq;
 
+
+    for (var i = 0; i < str.length; i++) {
+        if (str[i] !== '0' && str[i] !== '1') {
+            alert('只允许0和1');
+            return;
+        }
+
+    }
 
     for (var i = 0; i < str.length; i++) {
 
@@ -245,19 +205,4 @@ function getDecode(str, freq) {
     }
 
     return res;
-}
-
-
-function postOrder(node) {
-    if (!node.min1Index.index) {
-        console.log(node)
-        return ;
-    }
-
-
-    postOrder(node.min1Index.index);
-    postOrder(node.min2Index.index);
-
-    if (typeof node === 'string')
-        console.log(node);
 }
