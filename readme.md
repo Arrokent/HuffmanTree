@@ -1,6 +1,9 @@
 # Huffman Tree
 ## 软件信息
 ### 作者
+
+[点击直接访问app网站](http://chibiken.cn:8055/)
+
 田璞尧 scu se 2018141482233
 ### 开发语言
 html javascript
