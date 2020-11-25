@@ -18,21 +18,42 @@
         // （3）从输出文件读取以生成原始文本文件。
 
 
-        var str = "张三张三李四李四王五";
+        // str is the user's input text, freq is the characters' frequency, filename is the object's name
+        var str = "";
         var freq;
         var finalName;
 
-        var inputText = $("#inputText");
-        var outputFreq = $('#outputFreq');
-        var outputHTCode = $('#outputHTCode');
-        var outputTextCode = $('#outputTextCode');
-
+        // all js functions in the html page are wrapped by jQuery
         $(function (ev) {
 
+            // upload text
             $('#uploadText').click(function () {
 
-                // there can use jquery val function, need check
                 str = document.getElementById('inputText').value;
+                handleStr(str);
+
+            })
+
+            // upload file
+            $('#uploadFile').on('change', function () {
+                // use reader to read the file
+                var reader = new FileReader();
+                var file = this.files[0];
+                var str = '';
+
+                reader.readAsText(file)
+
+                // send the result -- the str to the handleStr function
+                reader.onload = function (e) {
+                    str = this.result;
+                    handleStr(str);
+                }
+            });
+
+            // get the str from text or file, and handle it
+            function handleStr(s) {
+                // there can use jquery val function, need check
+                str = s
 
                 console.log("Text: " + str);
                 console.log("URICode: " + encodeURI(str));
@@ -51,8 +72,9 @@
                 document.getElementById('outputFreq').value = outputFreq;
 
                 finalName = buildHT(freq);
-            })
+            }
 
+            // upload 01 code
             $('#uploadCode').click(function () {
 
                 // there can use jquery val function, need check
@@ -62,7 +84,7 @@
 
                 var res = getDecode(str, freq[finalName])
 
-                document.getElementById('outputText').value = res;
+                document.getElementById('outputText').value = decodeURI(res);
             })
 
 
@@ -82,55 +104,46 @@
         <h3>编码：</h3><br>
         <p>&nbsp;&nbsp;1. 选择输入文本或者上传文件</p><br>
         <p>&nbsp;&nbsp;2. 生成哈夫曼树的编码表示</p><br>
-        <p>&nbsp;&nbsp;3. 生成该文本编码表示</p><br>
         <h3>解码：</h3><br>
-        <p>&nbsp;&nbsp;4. 选择输入文本或者上传二进制文件(需要先生成Huffman树)</p><br>
-        <p>&nbsp;&nbsp;5. 输出该二进制文件的解码</p><br>
+        <p>&nbsp;&nbsp;1. 选择输入文本或者上传二进制文件(需要先生成Huffman树)</p><br>
+        <p>&nbsp;&nbsp;2. 输出该二进制文件的解码</p><br>
     </div>
 </div>
 
 <div class="container" style="margin: 0 200px">
 
-    <div class="form-group col-xs-6" style="width: 500px">
-        <label><h3>输入文本</h3></label>
+
+    <div class="form-group col-xs-6" style="width: 60%">
+        <label><h3>输入文本<small>&ensp; 支持url字符(英文,中文,数字,符号,法文,日文,etc.)</small></h3></label>
         <input type="text" class="form-control" id="inputText" placeholder="输入文本">
         <button class="btn btn-default" id="uploadText" style="margin-top: 10px">上传文本</button>
     </div>
 
 
-    <div class="form-group col-xs-6" style="width: 400px; margin-bottom: 100px">
-        <label><h3>选择文件</h3></label>
-        <input type="file" name="userUploadFile">
+    <div class="form-group col-xs-6" style="width: 400px; margin-bottom: 40px">
+        <label><h3>选择文件<small>&ensp; .txt only</small></h3></label>
+        <input type="file" id="uploadFile" accept="text/*">
+        <!--        <button class="btn btn-default" id="" style="margin-top: 10px">上传文本</button>-->
     </div>
 
 
-    <div class="form-group col-xs-12">
-        <label><h3>各字符频率</h3></label>
-        <input type="text" class="form-control" id="outputFreq" placeholder="请先输入文本或上传文件">
-    </div>
 
+        <div class="form-group col-xs-12" style="width: 80%;">
+            <label><h3>各字符频率</h3></label>
+            <input type="text" class="form-control" id="outputFreq" placeholder="请先输入文本或上传文件">
+        </div>
 
-<!--    <div class="form-group col-xs-12">-->
-<!--        <label><h3>Huffman树编码</h3></label>-->
-<!--        <input type="text" class="form-control" id="outputHTCode" placeholder="请先输入文本或上传文件">-->
-<!--    </div>-->
+        <div class="form-group col-xs-12" style="width: 80%;">
+            <label><h3>解码</h3></label>
+            <input type="text" class="form-control" id="inputCode" placeholder="请先输入文本或上传文件">
+            <button class="btn btn-default" id="uploadCode" style="margin-top: 10px">解码</button>
+        </div>
 
+        <div class="form-group col-xs-12" style="width: 80%;">
+            <label><h3>编码文本</h3></label>
+            <input type="text" class="form-control" id="outputText" placeholder="请先输入文本或上传文件">
+        </div>
 
-<!--    <div class="form-group col-xs-12">-->
-<!--        <label><h3>文本编码</h3></label>-->
-<!--        <input type="text" class="form-control" id="outputTextCode" placeholder="请先输入文本或上传文件">-->
-<!--    </div>-->
-
-    <div class="form-group col-xs-12">
-        <label><h3>解码</h3></label>
-        <input type="text" class="form-control" id="inputCode" placeholder="请先输入文本或上传文件">
-        <button class="btn btn-default" id="uploadCode" style="margin-top: 10px">解码</button>
-    </div>
-
-    <div class="form-group col-xs-12">
-        <label><h3>编码文本</h3></label>
-        <input type="text" class="form-control" id="outputText" placeholder="请先输入文本或上传文件">
-    </div>
 
 </div>
 

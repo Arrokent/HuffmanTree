@@ -207,15 +207,17 @@ function getHuffmanCode(str, freq) {
  * 读取一个字符的huffman树编码
  */
 function getHuffmanCodeHelp(str, freq) {
+    var res = '';
 
 }
+
 
 /*
  * 传入一个01编码，得到解码文件
  */
 function getDecode(str, freq) {
     // the result
-    var res = '0';
+    var res = '';
 
     // the iterator
     var curr = freq;
@@ -223,17 +225,18 @@ function getDecode(str, freq) {
 
     for (var i = 0; i < str.length; i++) {
 
+
         // 0 turn left, 1 turn right
         if (str[i] === '0') {
-            curr = freq.min1Index.index;
+            curr = curr.min1Index.index;
         } else if (str[i] === '1') {
-            curr = freq.min2Index.index;
+            curr = curr.min2Index.index;
         }
 
         // console.log(curr);
 
         // if find index is the value, append it to res
-        if (typeof curr !== "object") {
+        if (typeof curr === "string") {
             res += curr;
 
             // refresh curr to the root node
@@ -242,4 +245,19 @@ function getDecode(str, freq) {
     }
 
     return res;
+}
+
+
+function postOrder(node) {
+    if (!node.min1Index.index) {
+        console.log(node)
+        return ;
+    }
+
+
+    postOrder(node.min1Index.index);
+    postOrder(node.min2Index.index);
+
+    if (typeof node === 'string')
+        console.log(node);
 }
